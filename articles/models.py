@@ -6,8 +6,8 @@ class Article(models.Model):
     text = models.TextField(verbose_name='Текст')
     published_at = models.DateTimeField(verbose_name='Дата публикации')
     image = models.ImageField(null=True, blank=True, verbose_name='Изображение',)
-    # scopes = models.ManyToManyField('Theme', related_name='article', through="ArticleTheme")
-    # news = models.ManyToOneRel()
+    # themes = models.ManyToManyField('Theme', related_name='article', through="ArticleTheme")
+    # scopes = models.ManyToOneRel()
 
     class Meta:
         verbose_name = 'Статья'
@@ -20,8 +20,8 @@ class Article(models.Model):
 
 class Theme(models.Model):
     theme = models.CharField(max_length=50, verbose_name='Темы')
-    article = models.ManyToManyField(Article, related_name='scopes', through='ArticleTheme')
-    #news = models.ManyToOneRel()
+    article = models.ManyToManyField(Article, related_name='themes', through='ArticleTheme')
+    #scopes = models.ManyToOneRel()
 
     class Meta:
         verbose_name = 'Тема'
@@ -32,6 +32,6 @@ class Theme(models.Model):
 
 
 class ArticleTheme(models.Model):
-    article = models.ForeignKey(Article, related_name='news', on_delete=models.CASCADE)
-    theme = models.ForeignKey(Theme, related_name='news', on_delete=models.CASCADE)
-    main = models.BooleanField(verbose_name='Главная тема')
+    article = models.ForeignKey(Article, related_name='scopes', on_delete=models.CASCADE)
+    theme = models.ForeignKey(Theme, related_name='scopes', on_delete=models.CASCADE)
+    is_main = models.BooleanField(verbose_name='Главная тема')
